@@ -30,6 +30,9 @@ TASK_LIST = [
     "Reacher-v1",
     "Walker2d-v1"
 ]
+TASK_LIST = [
+    "Hopper-v1"
+]
 
 
 def gather_expert_data(config, env):
@@ -181,8 +184,8 @@ def analyze_single_experiment_data(config):
         'imitation': one_data_table_stats(our)
     })
 
-    print "Analyzing experiment {}".format(config['env_name'])
-    print df
+    print("Analyzing experiment {}".format(config['env_name']))
+    print(df)
 
 
 def get_default_config(env_name):
@@ -232,8 +235,8 @@ def get_epoch_grid_configs(env_name):
 
 
 def run_all_vanilla_experiments():
-    # for task in TASK_LIST:
-    #     run_single_experiment(get_default_config(task))
+    for task in TASK_LIST:
+        run_single_experiment(get_default_config(task))
 
     for task in TASK_LIST:
         analyze_single_experiment_data(get_default_config(task))
@@ -242,8 +245,8 @@ def run_all_vanilla_experiments():
 def run_lr_grid(task):
     configs = get_lr_grid_configs(task)
 
-    # for config in configs:
-    #     run_single_experiment(config)
+    for config in configs:
+        run_single_experiment(config)
 
     acc = {}
     for config in configs:
@@ -253,7 +256,7 @@ def run_lr_grid(task):
 
     data = pd.DataFrame(acc)
     their_data = pickle.load(open(config['their_data_path'], 'rb'))['returns']
-    their_data = np.array([their_data for _ in xrange(data.shape[1])]).T
+    their_data = np.array([their_data for _ in range(data.shape[1])]).T
 
     # s = slice(3, -2)
 
@@ -283,7 +286,7 @@ def run_epoch_grid(task):
 
     data = pd.DataFrame(acc)
     their_data = pickle.load(open(config['their_data_path'], 'rb'))['returns']
-    their_data = np.array([their_data for _ in xrange(data.shape[1])]).T
+    their_data = np.array([their_data for _ in range(data.shape[1])]).T
 
     ax = sns.tsplot(data=data.values, color='blue', legend='Imitation learning', linestyle='-')
     sns.tsplot(data=their_data, color='red', legend='Expert policy', linestyle='--')
